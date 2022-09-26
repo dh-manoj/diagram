@@ -1,0 +1,692 @@
+<?xml version="1.0" encoding="UTF-8"?><database name="supplier-portal" schema="public" type="PostgreSQL - 11.16">
+   <sequences>
+      <sequence increment="1" name="cities_id_seq" startValue="1"/>
+      <sequence increment="1" name="countries_id_seq" startValue="1"/>
+      <sequence increment="1" name="csv_import_id_seq" startValue="1"/>
+      <sequence increment="1" name="discounts_history_id_seq" startValue="1"/>
+      <sequence increment="1" name="discounts_id_seq" startValue="1"/>
+      <sequence increment="1" name="future_discounts_id_seq" startValue="1"/>
+      <sequence increment="1" name="future_prices_id_seq" startValue="1"/>
+      <sequence increment="1" name="price_change_requests_id_seq" startValue="1"/>
+      <sequence increment="1" name="prices_history_id_seq" startValue="1"/>
+      <sequence increment="1" name="prices_id_seq" startValue="1"/>
+      <sequence increment="1" name="products_history_id_seq" startValue="1"/>
+      <sequence increment="1" name="supplier_products_id_seq" startValue="1"/>
+      <sequence increment="1" name="suppliers_id_seq" startValue="1"/>
+      <sequence increment="1" name="suppliers_supplier_code_seq" startValue="1"/>
+   </sequences>
+   <tables>
+      <table name="cities" numRows="128769" remarks="" schema="public" type="TABLE">
+         <column autoUpdated="true" defaultValue="nextval('cities_id_seq'::regclass)" digits="0" id="0" name="id" nullable="false" remarks="" size="10" type="serial" typeCode="4">
+            <child column="city_id" foreignKey="suppliers_city_id_fkey" implied="false" onDeleteCascade="false" schema="public" table="suppliers"/>
+         </column>
+         <column autoUpdated="false" defaultValue="null" digits="0" id="1" name="country" nullable="true" remarks="" size="100" type="varchar" typeCode="12"/>
+         <column autoUpdated="false" defaultValue="null" digits="0" id="2" name="name" nullable="true" remarks="" size="100" type="varchar" typeCode="12"/>
+         <column autoUpdated="false" defaultValue="0" digits="0" id="3" name="country_id" nullable="false" remarks="" size="10" type="int4" typeCode="4"/>
+         <primaryKey column="id" sequenceNumberInPK="1"/>
+         <index name="cities_pkey" unique="true">
+            <column ascending="true" name="id"/>
+         </index>
+      </table>
+      <table name="countries" numRows="251" remarks="" schema="public" type="TABLE">
+         <column autoUpdated="true" defaultValue="nextval('countries_id_seq'::regclass)" digits="0" id="0" name="id" nullable="false" remarks="" size="10" type="serial" typeCode="4">
+            <child column="country_id" foreignKey="suppliers_country_id_fkey" implied="false" onDeleteCascade="false" schema="public" table="suppliers"/>
+         </column>
+         <column autoUpdated="false" defaultValue="null" digits="0" id="1" name="name" nullable="true" remarks="" size="100" type="varchar" typeCode="12"/>
+         <column autoUpdated="false" defaultValue="null" digits="0" id="2" name="code" nullable="true" remarks="" size="100" type="varchar" typeCode="12"/>
+         <primaryKey column="id" sequenceNumberInPK="1"/>
+         <index name="countries_pkey" unique="true">
+            <column ascending="true" name="id"/>
+         </index>
+      </table>
+      <table name="csv_file_processed" numRows="677" remarks="" schema="public" type="TABLE">
+         <column autoUpdated="false" defaultValue="null" digits="0" id="0" name="file_uuid" nullable="false" remarks="" size="255" type="varchar" typeCode="12">
+            <parent column="file_uuid" foreignKey="Implied Constraint" implied="true" onDeleteCascade="false" schema="public" table="imports"/>
+         </column>
+         <column autoUpdated="false" defaultValue="null" digits="6" id="1" name="processed_at" nullable="true" remarks="" size="29" type="timestamp" typeCode="93"/>
+         <index name="csv_file_processed_file_uuid_idx" unique="false">
+            <column ascending="true" name="file_uuid"/>
+         </index>
+      </table>
+      <table name="csv_import" numRows="512143" remarks="" schema="public" type="TABLE">
+         <column autoUpdated="true" defaultValue="nextval('csv_import_id_seq'::regclass)" digits="0" id="0" name="id" nullable="false" remarks="" size="10" type="serial" typeCode="4"/>
+         <column autoUpdated="false" defaultValue="null" digits="0" id="1" name="filename" nullable="false" remarks="" size="255" type="varchar" typeCode="12"/>
+         <column autoUpdated="false" defaultValue="null" digits="0" id="2" name="sku" nullable="false" remarks="" size="64" type="varchar" typeCode="12"/>
+         <column autoUpdated="false" defaultValue="null" digits="0" id="3" name="sku_status" nullable="false" remarks="" size="64" type="varchar" typeCode="12"/>
+         <column autoUpdated="false" defaultValue="null" digits="0" id="4" name="min_qty" nullable="false" remarks="" size="10" type="int4" typeCode="4"/>
+         <column autoUpdated="false" defaultValue="null" digits="0" id="5" name="bar_code" nullable="false" remarks="" size="64" type="varchar" typeCode="12"/>
+         <column autoUpdated="false" defaultValue="null" digits="0" id="6" name="supplier_id" nullable="false" remarks="" size="10" type="int4" typeCode="4"/>
+         <column autoUpdated="false" defaultValue="null" digits="0" id="7" name="supplier_rank" nullable="false" remarks="" size="10" type="int4" typeCode="4"/>
+         <column autoUpdated="false" defaultValue="null" digits="0" id="8" name="warehouse_id" nullable="false" remarks="" size="255" type="varchar" typeCode="12"/>
+         <column autoUpdated="false" defaultValue="null" digits="17" id="9" name="trade_price" nullable="false" remarks="" size="17" type="float8" typeCode="8"/>
+         <column autoUpdated="false" defaultValue="null" digits="17" id="10" name="off_invoice_discount_percentage" nullable="false" remarks="" size="17" type="float8" typeCode="8"/>
+         <column autoUpdated="false" defaultValue="null" digits="17" id="11" name="off_invoice_discount_static" nullable="false" remarks="" size="17" type="float8" typeCode="8"/>
+         <column autoUpdated="false" defaultValue="null" digits="17" id="12" name="vat_percentage" nullable="false" remarks="" size="17" type="float8" typeCode="8"/>
+         <column autoUpdated="false" defaultValue="null" digits="0" id="13" name="product_name" nullable="false" remarks="" size="255" type="varchar" typeCode="12"/>
+         <column autoUpdated="false" defaultValue="null" digits="0" id="14" name="supplier_name" nullable="false" remarks="" size="255" type="varchar" typeCode="12"/>
+         <column autoUpdated="false" defaultValue="null" digits="0" id="15" name="warehouse_name" nullable="false" remarks="" size="255" type="varchar" typeCode="12"/>
+         <column autoUpdated="false" defaultValue="null" digits="6" id="16" name="start_date_cost" nullable="false" remarks="" size="29" type="timestamp" typeCode="93"/>
+         <column autoUpdated="false" defaultValue="null" digits="6" id="17" name="start_date_discount" nullable="false" remarks="" size="29" type="timestamp" typeCode="93"/>
+         <column autoUpdated="false" defaultValue="null" digits="6" id="18" name="processed_at" nullable="true" remarks="" size="29" type="timestamp" typeCode="93"/>
+         <column autoUpdated="false" defaultValue="null" digits="0" id="19" name="failed_reason" nullable="false" remarks="" size="2147483647" type="text" typeCode="12"/>
+         <column autoUpdated="false" defaultValue="null" digits="0" id="20" name="file_uuid" nullable="false" remarks="" size="255" type="varchar" typeCode="12">
+            <parent column="file_uuid" foreignKey="Implied Constraint" implied="true" onDeleteCascade="false" schema="public" table="imports"/>
+         </column>
+         <column autoUpdated="false" defaultValue="null" digits="0" id="21" name="store_id" nullable="true" remarks="" size="10" type="int4" typeCode="4"/>
+         <column autoUpdated="false" defaultValue="null" digits="0" id="22" name="supplier_sku" nullable="true" remarks="" size="255" type="varchar" typeCode="12"/>
+         <primaryKey column="id" sequenceNumberInPK="1"/>
+         <index name="csv_import_pkey" unique="true">
+            <column ascending="true" name="id"/>
+         </index>
+         <index name="csv_import_file_uuid_idx" unique="false">
+            <column ascending="true" name="file_uuid"/>
+         </index>
+         <index name="csv_import_filename_and_sku_idx" unique="false">
+            <column ascending="true" name="filename"/>
+            <column ascending="true" name="sku"/>
+         </index>
+         <index name="csv_import_filename_idx" unique="false">
+            <column ascending="true" name="filename"/>
+         </index>
+      </table>
+      <table name="discount" numRows="0" remarks="" schema="public" type="TABLE">
+         <column autoUpdated="false" defaultValue="null" digits="0" id="0" name="id" nullable="false" remarks="" size="255" type="varchar" typeCode="12"/>
+         <column autoUpdated="false" defaultValue="NULL::character varying" digits="0" id="1" name="warehouse_id" nullable="true" remarks="" size="255" type="varchar" typeCode="12">
+            <parent column="id" foreignKey="fk_discount_warehouse_id" implied="false" onDeleteCascade="false" schema="public" table="warehouse"/>
+         </column>
+         <column autoUpdated="false" defaultValue="null" digits="0" id="2" name="store_global_id" nullable="true" remarks="" size="255" type="varchar" typeCode="12"/>
+         <column autoUpdated="false" defaultValue="null" digits="0" id="3" name="supplier_product_id" nullable="false" remarks="" size="10" type="int4" typeCode="4">
+            <parent column="id" foreignKey="fk_discount_supplier_product_id" implied="false" onDeleteCascade="false" schema="public" table="supplier_products"/>
+         </column>
+         <column autoUpdated="false" defaultValue="'OFF_INVOICE'::discount_type" digits="0" id="4" name="discount_type" nullable="true" remarks="" size="2147483647" type="discount_type" typeCode="12"/>
+         <column autoUpdated="false" defaultValue="null" digits="0" id="5" name="static_value" nullable="true" remarks="" size="10" type="int4" typeCode="4"/>
+         <column autoUpdated="false" defaultValue="null" digits="8" id="6" name="percentile_value" nullable="true" remarks="" size="8" type="float4" typeCode="7"/>
+         <column autoUpdated="false" defaultValue="null" digits="6" id="7" name="user_start_date" nullable="false" remarks="" size="29" type="timestamp" typeCode="93"/>
+         <column autoUpdated="false" defaultValue="null" digits="6" id="8" name="user_end_date" nullable="true" remarks="" size="29" type="timestamp" typeCode="93"/>
+         <column autoUpdated="false" defaultValue="null" digits="6" id="9" name="effective_start_date" nullable="false" remarks="" size="29" type="timestamp" typeCode="93"/>
+         <column autoUpdated="false" defaultValue="null" digits="6" id="10" name="effective_end_date" nullable="true" remarks="" size="29" type="timestamp" typeCode="93"/>
+         <column autoUpdated="false" defaultValue="0" digits="0" id="11" name="max_quantity" nullable="false" remarks="" size="10" type="int4" typeCode="4"/>
+         <column autoUpdated="false" defaultValue="0" digits="0" id="12" name="min_quantity" nullable="false" remarks="" size="10" type="int4" typeCode="4"/>
+         <column autoUpdated="false" defaultValue="null" digits="0" id="13" name="agreement_url" nullable="true" remarks="" size="255" type="varchar" typeCode="12"/>
+         <column autoUpdated="false" defaultValue="null" digits="0" id="14" name="requested_by" nullable="false" remarks="" size="255" type="varchar" typeCode="12"/>
+         <column autoUpdated="false" defaultValue="null" digits="6" id="15" name="created_at" nullable="false" remarks="" size="29" type="timestamp" typeCode="93"/>
+         <column autoUpdated="false" defaultValue="null" digits="6" id="16" name="updated_at" nullable="false" remarks="" size="29" type="timestamp" typeCode="93"/>
+         <column autoUpdated="false" defaultValue="null" digits="6" id="17" name="deleted_at" nullable="true" remarks="" size="29" type="timestamp" typeCode="93"/>
+         <column autoUpdated="false" defaultValue="0" digits="0" id="18" name="static_value_units" nullable="true" remarks="" size="19" type="int8" typeCode="-5"/>
+         <column autoUpdated="false" defaultValue="0" digits="0" id="19" name="static_value_nanos" nullable="true" remarks="" size="19" type="int8" typeCode="-5"/>
+         <primaryKey column="id" sequenceNumberInPK="1"/>
+         <index name="discount_pkey" unique="true">
+            <column ascending="true" name="id"/>
+         </index>
+         <index name="idx_discount_supplier_product_id_warehouse_id_start_end_date" unique="false">
+            <column ascending="true" name="supplier_product_id"/>
+            <column ascending="true" name="warehouse_id"/>
+            <column ascending="false" name="effective_start_date"/>
+            <column ascending="true" name="effective_end_date"/>
+         </index>
+         <checkConstraint constraint="((effective_end_date &gt; effective_start_date))" name="check_discount_effective_end_date_greater_than_start_date"/>
+         <checkConstraint constraint="((user_end_date &gt; user_start_date))" name="check_discount_user_end_date_greater_than_start_date"/>
+      </table>
+      <table name="discounts" numRows="222126" remarks="" schema="public" type="TABLE">
+         <column autoUpdated="true" defaultValue="nextval('discounts_id_seq'::regclass)" digits="0" id="0" name="id" nullable="false" remarks="" size="10" type="serial" typeCode="4">
+            <child column="parent_id" foreignKey="discounts_history_parent_id_fkey" implied="false" onDeleteCascade="true" schema="public" table="discounts_history"/>
+            <child column="parent_id" foreignKey="future_discounts_parent_id_fkey" implied="false" onDeleteCascade="true" schema="public" table="future_discounts"/>
+         </column>
+         <column autoUpdated="false" defaultValue="null" digits="0" id="1" name="price_id" nullable="false" remarks="" size="10" type="int4" typeCode="4">
+            <parent column="id" foreignKey="discounts_price_id_fkey" implied="false" onDeleteCascade="true" schema="public" table="prices"/>
+         </column>
+         <column autoUpdated="false" defaultValue="null" digits="0" id="2" name="static_value" nullable="true" remarks="" size="10" type="int4" typeCode="4"/>
+         <column autoUpdated="false" defaultValue="null" digits="2" id="3" name="percentile_value" nullable="true" remarks="" size="5" type="numeric" typeCode="2"/>
+         <column autoUpdated="false" defaultValue="null" digits="6" id="4" name="start_date" nullable="true" remarks="" size="29" type="timestamp" typeCode="93"/>
+         <column autoUpdated="false" defaultValue="null" digits="6" id="5" name="end_date" nullable="true" remarks="" size="29" type="timestamp" typeCode="93"/>
+         <column autoUpdated="false" defaultValue="0" digits="0" id="6" name="max_qty" nullable="false" remarks="" size="10" type="int4" typeCode="4"/>
+         <column autoUpdated="false" defaultValue="0" digits="0" id="7" name="min_qty" nullable="false" remarks="" size="10" type="int4" typeCode="4"/>
+         <column autoUpdated="false" defaultValue="null" digits="0" id="8" name="agreement_url" nullable="true" remarks="" size="255" type="varchar" typeCode="12"/>
+         <column autoUpdated="false" defaultValue="null" digits="6" id="9" name="created_at" nullable="false" remarks="" size="29" type="timestamp" typeCode="93"/>
+         <column autoUpdated="false" defaultValue="null" digits="6" id="10" name="updated_at" nullable="false" remarks="" size="29" type="timestamp" typeCode="93"/>
+         <column autoUpdated="false" defaultValue="null" digits="6" id="11" name="deleted_at" nullable="true" remarks="" size="29" type="timestamp" typeCode="93"/>
+         <column autoUpdated="false" defaultValue="'OFF_INVOICE'::discount_type" digits="0" id="12" name="discount_type" nullable="true" remarks="" size="2147483647" type="discount_type" typeCode="12"/>
+         <column autoUpdated="false" defaultValue="''::character varying" digits="0" id="13" name="requested_by" nullable="true" remarks="" size="128" type="varchar" typeCode="12"/>
+         <column autoUpdated="false" defaultValue="null" digits="0" id="14" name="deleted_by" nullable="true" remarks="" size="256" type="varchar" typeCode="12"/>
+         <column autoUpdated="false" defaultValue="0" digits="0" id="15" name="static_value_units" nullable="true" remarks="" size="19" type="int8" typeCode="-5"/>
+         <column autoUpdated="false" defaultValue="0" digits="0" id="16" name="static_value_nanos" nullable="true" remarks="" size="19" type="int8" typeCode="-5"/>
+         <column autoUpdated="false" defaultValue="null" digits="0" id="17" name="change_source" nullable="true" remarks="" size="2147483647" type="change_source" typeCode="12"/>
+         <primaryKey column="id" sequenceNumberInPK="1"/>
+         <index name="discounts_pkey" unique="true">
+            <column ascending="true" name="id"/>
+         </index>
+         <index name="discount_price_id_idx" unique="false">
+            <column ascending="true" name="price_id"/>
+         </index>
+      </table>
+      <table name="discounts_history" numRows="723637" remarks="" schema="public" type="TABLE">
+         <column autoUpdated="true" defaultValue="nextval('discounts_history_id_seq'::regclass)" digits="0" id="0" name="id" nullable="false" remarks="" size="10" type="serial" typeCode="4"/>
+         <column autoUpdated="false" defaultValue="null" digits="0" id="1" name="price_id" nullable="false" remarks="" size="10" type="int4" typeCode="4"/>
+         <column autoUpdated="false" defaultValue="null" digits="0" id="2" name="discount_type" nullable="true" remarks="" size="2147483647" type="discount_type" typeCode="12"/>
+         <column autoUpdated="false" defaultValue="null" digits="0" id="3" name="static_value" nullable="true" remarks="" size="10" type="int4" typeCode="4"/>
+         <column autoUpdated="false" defaultValue="null" digits="2" id="4" name="percentile_value" nullable="true" remarks="" size="5" type="numeric" typeCode="2"/>
+         <column autoUpdated="false" defaultValue="null" digits="6" id="5" name="start_date" nullable="true" remarks="" size="29" type="timestamp" typeCode="93"/>
+         <column autoUpdated="false" defaultValue="null" digits="6" id="6" name="end_date" nullable="true" remarks="" size="29" type="timestamp" typeCode="93"/>
+         <column autoUpdated="false" defaultValue="0" digits="0" id="7" name="max_qty" nullable="false" remarks="" size="10" type="int4" typeCode="4"/>
+         <column autoUpdated="false" defaultValue="0" digits="0" id="8" name="min_qty" nullable="false" remarks="" size="10" type="int4" typeCode="4"/>
+         <column autoUpdated="false" defaultValue="null" digits="0" id="9" name="agreement_url" nullable="true" remarks="" size="255" type="varchar" typeCode="12"/>
+         <column autoUpdated="false" defaultValue="null" digits="6" id="10" name="created_at" nullable="false" remarks="" size="29" type="timestamp" typeCode="93"/>
+         <column autoUpdated="false" defaultValue="null" digits="0" id="11" name="parent_id" nullable="false" remarks="" size="10" type="int4" typeCode="4">
+            <parent column="id" foreignKey="discounts_history_parent_id_fkey" implied="false" onDeleteCascade="true" schema="public" table="discounts"/>
+         </column>
+         <column autoUpdated="false" defaultValue="''::character varying" digits="0" id="12" name="requested_by" nullable="true" remarks="" size="128" type="varchar" typeCode="12"/>
+         <column autoUpdated="false" defaultValue="null" digits="6" id="13" name="deleted_at" nullable="true" remarks="" size="29" type="timestamp" typeCode="93"/>
+         <column autoUpdated="false" defaultValue="null" digits="0" id="14" name="deleted_by" nullable="true" remarks="" size="256" type="varchar" typeCode="12"/>
+         <column autoUpdated="false" defaultValue="0" digits="0" id="15" name="static_value_units" nullable="true" remarks="" size="19" type="int8" typeCode="-5"/>
+         <column autoUpdated="false" defaultValue="0" digits="0" id="16" name="static_value_nanos" nullable="true" remarks="" size="19" type="int8" typeCode="-5"/>
+         <column autoUpdated="false" defaultValue="null" digits="0" id="17" name="change_source" nullable="true" remarks="" size="2147483647" type="change_source" typeCode="12"/>
+         <primaryKey column="id" sequenceNumberInPK="1"/>
+         <index name="discounts_history_pkey" unique="true">
+            <column ascending="true" name="id"/>
+         </index>
+         <index name="discount_history_price_id_idx" unique="false">
+            <column ascending="true" name="parent_id"/>
+         </index>
+      </table>
+      <table name="future_discounts" numRows="376059" remarks="" schema="public" type="TABLE">
+         <column autoUpdated="true" defaultValue="nextval('future_discounts_id_seq'::regclass)" digits="0" id="0" name="id" nullable="false" remarks="" size="10" type="serial" typeCode="4"/>
+         <column autoUpdated="false" defaultValue="null" digits="0" id="1" name="price_id" nullable="false" remarks="" size="10" type="int4" typeCode="4"/>
+         <column autoUpdated="false" defaultValue="null" digits="0" id="2" name="discount_type" nullable="true" remarks="" size="2147483647" type="discount_type" typeCode="12"/>
+         <column autoUpdated="false" defaultValue="null" digits="0" id="3" name="static_value" nullable="true" remarks="" size="10" type="int4" typeCode="4"/>
+         <column autoUpdated="false" defaultValue="null" digits="2" id="4" name="percentile_value" nullable="true" remarks="" size="5" type="numeric" typeCode="2"/>
+         <column autoUpdated="false" defaultValue="null" digits="6" id="5" name="start_date" nullable="true" remarks="" size="29" type="timestamp" typeCode="93"/>
+         <column autoUpdated="false" defaultValue="null" digits="6" id="6" name="end_date" nullable="true" remarks="" size="29" type="timestamp" typeCode="93"/>
+         <column autoUpdated="false" defaultValue="0" digits="0" id="7" name="max_qty" nullable="false" remarks="" size="10" type="int4" typeCode="4"/>
+         <column autoUpdated="false" defaultValue="0" digits="0" id="8" name="min_qty" nullable="false" remarks="" size="10" type="int4" typeCode="4"/>
+         <column autoUpdated="false" defaultValue="null" digits="0" id="9" name="agreement_url" nullable="true" remarks="" size="255" type="varchar" typeCode="12"/>
+         <column autoUpdated="false" defaultValue="null" digits="6" id="10" name="created_at" nullable="false" remarks="" size="29" type="timestamp" typeCode="93"/>
+         <column autoUpdated="false" defaultValue="null" digits="0" id="11" name="parent_id" nullable="false" remarks="" size="10" type="int4" typeCode="4">
+            <parent column="id" foreignKey="future_discounts_parent_id_fkey" implied="false" onDeleteCascade="true" schema="public" table="discounts"/>
+         </column>
+         <column autoUpdated="false" defaultValue="''::character varying" digits="0" id="12" name="requested_by" nullable="true" remarks="" size="128" type="varchar" typeCode="12"/>
+         <column autoUpdated="false" defaultValue="null" digits="6" id="13" name="deleted_at" nullable="true" remarks="" size="29" type="timestamp" typeCode="93"/>
+         <column autoUpdated="false" defaultValue="null" digits="0" id="14" name="deleted_by" nullable="true" remarks="" size="256" type="varchar" typeCode="12"/>
+         <column autoUpdated="false" defaultValue="0" digits="0" id="15" name="static_value_units" nullable="true" remarks="" size="19" type="int8" typeCode="-5"/>
+         <column autoUpdated="false" defaultValue="0" digits="0" id="16" name="static_value_nanos" nullable="true" remarks="" size="19" type="int8" typeCode="-5"/>
+         <column autoUpdated="false" defaultValue="null" digits="0" id="17" name="change_source" nullable="true" remarks="" size="2147483647" type="change_source" typeCode="12"/>
+         <primaryKey column="id" sequenceNumberInPK="1"/>
+         <index name="future_discounts_pkey" unique="true">
+            <column ascending="true" name="id"/>
+         </index>
+         <index name="future_discount_parent_idx" unique="false">
+            <column ascending="true" name="parent_id"/>
+         </index>
+      </table>
+      <table name="future_prices" numRows="30593" remarks="" schema="public" type="TABLE">
+         <column autoUpdated="true" defaultValue="nextval('future_prices_id_seq'::regclass)" digits="0" id="0" name="id" nullable="false" remarks="" size="10" type="serial" typeCode="4"/>
+         <column autoUpdated="false" defaultValue="null" digits="0" id="1" name="store_id" nullable="false" remarks="" size="10" type="int4" typeCode="4"/>
+         <column autoUpdated="false" defaultValue="null" digits="0" id="2" name="supplier_product_id" nullable="false" remarks="" size="10" type="int4" typeCode="4"/>
+         <column autoUpdated="false" defaultValue="null" digits="0" id="3" name="trade_cost" nullable="false" remarks="" size="10" type="int4" typeCode="4"/>
+         <column autoUpdated="false" defaultValue="null" digits="0" id="4" name="info" nullable="true" remarks="" size="2147483647" type="text" typeCode="12"/>
+         <column autoUpdated="false" defaultValue="null" digits="0" id="5" name="accepted_by" nullable="false" remarks="" size="128" type="varchar" typeCode="12"/>
+         <column autoUpdated="false" defaultValue="null" digits="0" id="6" name="requested_by" nullable="false" remarks="" size="128" type="varchar" typeCode="12"/>
+         <column autoUpdated="false" defaultValue="null" digits="6" id="7" name="created_at" nullable="false" remarks="" size="29" type="timestamp" typeCode="93"/>
+         <column autoUpdated="false" defaultValue="null" digits="0" id="8" name="parent_id" nullable="false" remarks="" size="10" type="int4" typeCode="4">
+            <parent column="id" foreignKey="future_prices_parent_id_fkey" implied="false" onDeleteCascade="true" schema="public" table="prices"/>
+         </column>
+         <column autoUpdated="false" defaultValue="''::character varying" digits="0" id="9" name="store_global_id" nullable="true" remarks="" size="64" type="varchar" typeCode="12"/>
+         <column autoUpdated="false" defaultValue="null" digits="6" id="10" name="start_date" nullable="true" remarks="" size="29" type="timestamp" typeCode="93"/>
+         <column autoUpdated="false" defaultValue="null" digits="6" id="11" name="deleted_at" nullable="true" remarks="" size="29" type="timestamp" typeCode="93"/>
+         <column autoUpdated="false" defaultValue="null" digits="0" id="12" name="deleted_by" nullable="true" remarks="" size="256" type="varchar" typeCode="12"/>
+         <column autoUpdated="false" defaultValue="NULL::character varying" digits="0" id="13" name="warehouse_id" nullable="true" remarks="" size="255" type="varchar" typeCode="12">
+            <parent column="id" foreignKey="future_prices_warehouse_id_fkey" implied="false" onDeleteCascade="false" schema="public" table="warehouse"/>
+         </column>
+         <column autoUpdated="false" defaultValue="0" digits="0" id="14" name="trade_cost_units" nullable="true" remarks="" size="19" type="int8" typeCode="-5"/>
+         <column autoUpdated="false" defaultValue="0" digits="0" id="15" name="trade_cost_nanos" nullable="true" remarks="" size="19" type="int8" typeCode="-5"/>
+         <column autoUpdated="false" defaultValue="null" digits="0" id="16" name="change_source" nullable="true" remarks="" size="2147483647" type="change_source" typeCode="12"/>
+         <primaryKey column="id" sequenceNumberInPK="1"/>
+         <index name="future_prices_pkey" unique="true">
+            <column ascending="true" name="id"/>
+         </index>
+         <index name="future_prices_parent_idx" unique="false">
+            <column ascending="true" name="parent_id"/>
+         </index>
+      </table>
+      <table name="imports" numRows="35" remarks="" schema="public" type="TABLE">
+         <column autoUpdated="false" defaultValue="null" digits="0" id="0" name="file_uuid" nullable="false" remarks="" size="255" type="varchar" typeCode="12">
+            <child column="file_uuid" foreignKey="Implied Constraint" implied="true" onDeleteCascade="false" schema="public" table="csv_file_processed"/>
+            <child column="file_uuid" foreignKey="Implied Constraint" implied="true" onDeleteCascade="false" schema="public" table="csv_import"/>
+            <child column="file_uuid" foreignKey="Implied Constraint" implied="true" onDeleteCascade="false" schema="public" table="imports_row_product_assortment"/>
+            <child column="file_uuid" foreignKey="Implied Constraint" implied="true" onDeleteCascade="false" schema="public" table="imports_row_product_price_existing_store"/>
+            <child column="file_uuid" foreignKey="Implied Constraint" implied="true" onDeleteCascade="false" schema="public" table="imports_row_purchase_vat"/>
+         </column>
+         <column autoUpdated="false" defaultValue="null" digits="0" id="1" name="file_name" nullable="false" remarks="" size="255" type="varchar" typeCode="12"/>
+         <column autoUpdated="false" defaultValue="null" digits="0" id="2" name="type" nullable="false" remarks="" size="64" type="varchar" typeCode="12"/>
+         <column autoUpdated="false" defaultValue="null" digits="0" id="3" name="status" nullable="false" remarks="" size="64" type="varchar" typeCode="12"/>
+         <column autoUpdated="false" defaultValue="null" digits="0" id="4" name="stage" nullable="false" remarks="" size="64" type="varchar" typeCode="12"/>
+         <column autoUpdated="false" defaultValue="null" digits="0" id="5" name="requested_by" nullable="false" remarks="" size="255" type="varchar" typeCode="12"/>
+         <column autoUpdated="false" defaultValue="null" digits="0" id="6" name="failed_reason" nullable="true" remarks="" size="2147483647" type="text" typeCode="12"/>
+         <column autoUpdated="false" defaultValue="null" digits="6" id="7" name="created_at" nullable="false" remarks="" size="29" type="timestamp" typeCode="93"/>
+         <column autoUpdated="false" defaultValue="null" digits="6" id="8" name="updated_at" nullable="false" remarks="" size="29" type="timestamp" typeCode="93"/>
+         <primaryKey column="file_uuid" sequenceNumberInPK="1"/>
+         <index name="imports_pkey" unique="true">
+            <column ascending="true" name="file_uuid"/>
+         </index>
+      </table>
+      <table name="imports_row_product_assortment" numRows="17406" remarks="" schema="public" type="TABLE">
+         <column autoUpdated="false" defaultValue="null" digits="0" id="0" name="file_uuid" nullable="false" remarks="" size="255" type="varchar" typeCode="12">
+            <parent column="file_uuid" foreignKey="Implied Constraint" implied="true" onDeleteCascade="false" schema="public" table="imports"/>
+         </column>
+         <column autoUpdated="false" defaultValue="null" digits="0" id="1" name="row_id" nullable="false" remarks="" size="10" type="int4" typeCode="4"/>
+         <column autoUpdated="false" defaultValue="null" digits="0" id="2" name="failed_reason" nullable="true" remarks="" size="2147483647" type="text" typeCode="12"/>
+         <column autoUpdated="false" defaultValue="null" digits="6" id="3" name="processed_at" nullable="true" remarks="" size="29" type="timestamp" typeCode="93"/>
+         <column autoUpdated="false" defaultValue="null" digits="0" id="4" name="sku" nullable="false" remarks="" size="20" type="varchar" typeCode="12">
+            <parent column="sku" foreignKey="Implied Constraint" implied="true" onDeleteCascade="false" schema="public" table="products"/>
+         </column>
+         <column autoUpdated="false" defaultValue="null" digits="0" id="5" name="sku_status" nullable="false" remarks="" size="64" type="varchar" typeCode="12"/>
+         <column autoUpdated="false" defaultValue="null" digits="0" id="6" name="units_per_case" nullable="false" remarks="" size="10" type="int4" typeCode="4"/>
+         <column autoUpdated="false" defaultValue="null" digits="0" id="7" name="supplier_id" nullable="false" remarks="" size="10" type="int4" typeCode="4"/>
+         <column autoUpdated="false" defaultValue="null" digits="0" id="8" name="supplier_rank" nullable="false" remarks="" size="10" type="int4" typeCode="4"/>
+         <column autoUpdated="false" defaultValue="null" digits="0" id="9" name="warehouse_id" nullable="false" remarks="" size="255" type="varchar" typeCode="12"/>
+         <column autoUpdated="false" defaultValue="null" digits="17" id="10" name="trade_price" nullable="false" remarks="" size="17" type="float8" typeCode="8"/>
+         <column autoUpdated="false" defaultValue="null" digits="17" id="11" name="off_invoice_discount_percentage" nullable="false" remarks="" size="17" type="float8" typeCode="8"/>
+         <column autoUpdated="false" defaultValue="null" digits="17" id="12" name="off_invoice_discount_static" nullable="false" remarks="" size="17" type="float8" typeCode="8"/>
+         <column autoUpdated="false" defaultValue="null" digits="0" id="13" name="product_name" nullable="false" remarks="" size="255" type="varchar" typeCode="12"/>
+         <column autoUpdated="false" defaultValue="null" digits="0" id="14" name="supplier_name" nullable="false" remarks="" size="255" type="varchar" typeCode="12"/>
+         <column autoUpdated="false" defaultValue="null" digits="0" id="15" name="warehouse_name" nullable="false" remarks="" size="255" type="varchar" typeCode="12"/>
+         <column autoUpdated="false" defaultValue="null" digits="6" id="16" name="start_date_cost" nullable="false" remarks="" size="29" type="timestamp" typeCode="93"/>
+         <column autoUpdated="false" defaultValue="null" digits="6" id="17" name="start_date_discount" nullable="false" remarks="" size="29" type="timestamp" typeCode="93"/>
+         <column autoUpdated="false" defaultValue="null" digits="0" id="18" name="store_id" nullable="true" remarks="" size="10" type="int4" typeCode="4"/>
+         <column autoUpdated="false" defaultValue="null" digits="0" id="19" name="supplier_sku" nullable="true" remarks="" size="255" type="varchar" typeCode="12"/>
+         <index name="product_assortment_file_uuid_row_id_unique" unique="true">
+            <column ascending="true" name="file_uuid"/>
+            <column ascending="true" name="row_id"/>
+         </index>
+      </table>
+      <table name="imports_row_product_price_existing_store" numRows="0" remarks="" schema="public" type="TABLE">
+         <column autoUpdated="false" defaultValue="null" digits="0" id="0" name="file_uuid" nullable="false" remarks="" size="255" type="varchar" typeCode="12">
+            <parent column="file_uuid" foreignKey="Implied Constraint" implied="true" onDeleteCascade="false" schema="public" table="imports"/>
+         </column>
+         <column autoUpdated="false" defaultValue="null" digits="0" id="1" name="row_id" nullable="false" remarks="" size="10" type="int4" typeCode="4"/>
+         <column autoUpdated="false" defaultValue="null" digits="0" id="2" name="failed_reason" nullable="true" remarks="" size="2147483647" type="text" typeCode="12"/>
+         <column autoUpdated="false" defaultValue="null" digits="6" id="3" name="processed_at" nullable="true" remarks="" size="29" type="timestamp" typeCode="93"/>
+         <column autoUpdated="false" defaultValue="null" digits="0" id="4" name="sku" nullable="false" remarks="" size="20" type="varchar" typeCode="12">
+            <parent column="sku" foreignKey="Implied Constraint" implied="true" onDeleteCascade="false" schema="public" table="products"/>
+         </column>
+         <column autoUpdated="false" defaultValue="null" digits="0" id="5" name="product_name" nullable="true" remarks="" size="255" type="varchar" typeCode="12"/>
+         <column autoUpdated="false" defaultValue="null" digits="0" id="6" name="supplier_id" nullable="false" remarks="" size="10" type="int4" typeCode="4"/>
+         <column autoUpdated="false" defaultValue="null" digits="0" id="7" name="supplier_name" nullable="true" remarks="" size="255" type="varchar" typeCode="12"/>
+         <column autoUpdated="false" defaultValue="null" digits="0" id="8" name="supplier_sku" nullable="true" remarks="" size="255" type="varchar" typeCode="12"/>
+         <column autoUpdated="false" defaultValue="null" digits="17" id="9" name="trade_price" nullable="false" remarks="" size="17" type="float8" typeCode="8"/>
+         <column autoUpdated="false" defaultValue="null" digits="17" id="10" name="off_invoice_discount_percentage" nullable="true" remarks="" size="17" type="float8" typeCode="8"/>
+         <column autoUpdated="false" defaultValue="null" digits="17" id="11" name="off_invoice_discount_static" nullable="true" remarks="" size="17" type="float8" typeCode="8"/>
+         <column autoUpdated="false" defaultValue="null" digits="6" id="12" name="start_date_cost" nullable="false" remarks="" size="29" type="timestamp" typeCode="93"/>
+         <column autoUpdated="false" defaultValue="null" digits="6" id="13" name="start_date_discount" nullable="true" remarks="" size="29" type="timestamp" typeCode="93"/>
+         <index name="product_price_existing_store_file_uuid_row_id_unique" unique="true">
+            <column ascending="true" name="file_uuid"/>
+            <column ascending="true" name="row_id"/>
+         </index>
+         <index name="product_price_existing_store_file_uuid_sku_supplier_id_unique" unique="true">
+            <column ascending="true" name="file_uuid"/>
+            <column ascending="true" name="sku"/>
+            <column ascending="true" name="supplier_id"/>
+         </index>
+      </table>
+      <table name="imports_row_purchase_vat" numRows="0" remarks="" schema="public" type="TABLE">
+         <column autoUpdated="false" defaultValue="null" digits="0" id="0" name="file_uuid" nullable="false" remarks="" size="255" type="varchar" typeCode="12">
+            <parent column="file_uuid" foreignKey="Implied Constraint" implied="true" onDeleteCascade="false" schema="public" table="imports"/>
+         </column>
+         <column autoUpdated="false" defaultValue="null" digits="0" id="1" name="row_id" nullable="false" remarks="" size="10" type="int4" typeCode="4"/>
+         <column autoUpdated="false" defaultValue="null" digits="0" id="2" name="failed_reason" nullable="true" remarks="" size="2147483647" type="text" typeCode="12"/>
+         <column autoUpdated="false" defaultValue="null" digits="6" id="3" name="processed_at" nullable="true" remarks="" size="29" type="timestamp" typeCode="93"/>
+         <column autoUpdated="false" defaultValue="null" digits="0" id="4" name="sku" nullable="false" remarks="" size="20" type="varchar" typeCode="12">
+            <parent column="sku" foreignKey="Implied Constraint" implied="true" onDeleteCascade="false" schema="public" table="products"/>
+         </column>
+         <column autoUpdated="false" defaultValue="null" digits="2" id="5" name="vat_percentage" nullable="true" remarks="" size="5" type="numeric" typeCode="2"/>
+         <index name="file_uuid_row_id_unique" unique="true">
+            <column ascending="true" name="file_uuid"/>
+            <column ascending="true" name="row_id"/>
+         </index>
+      </table>
+      <table name="locks" numRows="1" remarks="" schema="public" type="TABLE">
+         <column autoUpdated="false" defaultValue="null" digits="0" id="0" name="name" nullable="false" remarks="" size="256" type="varchar" typeCode="12">
+            <child column="supplier_name" foreignKey="Implied Constraint" implied="true" onDeleteCascade="false" schema="public" table="product_detailed"/>
+            <child column="name" foreignKey="Implied Constraint" implied="true" onDeleteCascade="false" schema="public" table="suppliers"/>
+         </column>
+         <column autoUpdated="false" defaultValue="null" digits="6" id="1" name="release_at" nullable="true" remarks="" size="29" type="timestamp" typeCode="93"/>
+         <column autoUpdated="false" defaultValue="null" digits="0" id="2" name="owner" nullable="true" remarks="" size="512" type="varchar" typeCode="12"/>
+         <column autoUpdated="false" defaultValue="null" digits="0" id="3" name="process_id" nullable="true" remarks="" size="256" type="varchar" typeCode="12"/>
+         <primaryKey column="name" sequenceNumberInPK="1"/>
+         <index name="locks_pkey" unique="true">
+            <column ascending="true" name="name"/>
+         </index>
+      </table>
+      <table name="price" numRows="0" remarks="" schema="public" type="TABLE">
+         <column autoUpdated="false" defaultValue="null" digits="0" id="0" name="id" nullable="false" remarks="" size="255" type="varchar" typeCode="12"/>
+         <column autoUpdated="false" defaultValue="NULL::character varying" digits="0" id="1" name="warehouse_id" nullable="true" remarks="" size="255" type="varchar" typeCode="12">
+            <parent column="id" foreignKey="fk_price_warehouse_id" implied="false" onDeleteCascade="false" schema="public" table="warehouse"/>
+         </column>
+         <column autoUpdated="false" defaultValue="null" digits="0" id="2" name="store_global_id" nullable="true" remarks="" size="255" type="varchar" typeCode="12"/>
+         <column autoUpdated="false" defaultValue="null" digits="0" id="3" name="supplier_product_id" nullable="false" remarks="" size="10" type="int4" typeCode="4">
+            <parent column="id" foreignKey="fk_price_supplier_product_id" implied="false" onDeleteCascade="false" schema="public" table="supplier_products"/>
+         </column>
+         <column autoUpdated="false" defaultValue="0" digits="0" id="4" name="supplier_rank" nullable="true" remarks="" size="10" type="int4" typeCode="4"/>
+         <column autoUpdated="false" defaultValue="null" digits="0" id="5" name="trade_cost" nullable="false" remarks="" size="10" type="int4" typeCode="4"/>
+         <column autoUpdated="false" defaultValue="null" digits="0" id="6" name="info" nullable="true" remarks="" size="2147483647" type="text" typeCode="12"/>
+         <column autoUpdated="false" defaultValue="null" digits="6" id="7" name="user_start_date" nullable="false" remarks="" size="29" type="timestamp" typeCode="93"/>
+         <column autoUpdated="false" defaultValue="null" digits="6" id="8" name="user_end_date" nullable="true" remarks="" size="29" type="timestamp" typeCode="93"/>
+         <column autoUpdated="false" defaultValue="null" digits="6" id="9" name="effective_start_date" nullable="false" remarks="" size="29" type="timestamp" typeCode="93"/>
+         <column autoUpdated="false" defaultValue="null" digits="6" id="10" name="effective_end_date" nullable="true" remarks="" size="29" type="timestamp" typeCode="93"/>
+         <column autoUpdated="false" defaultValue="null" digits="0" id="11" name="requested_by" nullable="false" remarks="" size="255" type="varchar" typeCode="12"/>
+         <column autoUpdated="false" defaultValue="null" digits="6" id="12" name="created_at" nullable="false" remarks="" size="29" type="timestamp" typeCode="93"/>
+         <column autoUpdated="false" defaultValue="null" digits="6" id="13" name="updated_at" nullable="false" remarks="" size="29" type="timestamp" typeCode="93"/>
+         <column autoUpdated="false" defaultValue="null" digits="6" id="14" name="deleted_at" nullable="true" remarks="" size="29" type="timestamp" typeCode="93"/>
+         <column autoUpdated="false" defaultValue="NULL::character varying" digits="0" id="15" name="deleted_by" nullable="true" remarks="" size="255" type="varchar" typeCode="12"/>
+         <column autoUpdated="false" defaultValue="0" digits="0" id="16" name="trade_cost_units" nullable="true" remarks="" size="19" type="int8" typeCode="-5"/>
+         <column autoUpdated="false" defaultValue="0" digits="0" id="17" name="trade_cost_nanos" nullable="true" remarks="" size="19" type="int8" typeCode="-5"/>
+         <primaryKey column="id" sequenceNumberInPK="1"/>
+         <index name="price_pkey" unique="true">
+            <column ascending="true" name="id"/>
+         </index>
+         <index name="idx_price_supplier_product_id_warehouse_id_start_end_date" unique="false">
+            <column ascending="true" name="supplier_product_id"/>
+            <column ascending="true" name="warehouse_id"/>
+            <column ascending="false" name="effective_start_date"/>
+            <column ascending="true" name="effective_end_date"/>
+         </index>
+         <checkConstraint constraint="((effective_end_date &gt; effective_start_date))" name="check_price_effective_end_date_greater_than_start_date"/>
+         <checkConstraint constraint="((user_end_date &gt; user_start_date))" name="check_price_user_end_date_greater_than_start_date"/>
+      </table>
+      <table name="price_change_requests" numRows="0" remarks="" schema="public" type="TABLE">
+         <column autoUpdated="true" defaultValue="nextval('price_change_requests_id_seq'::regclass)" digits="0" id="0" name="id" nullable="false" remarks="" size="10" type="serial" typeCode="4"/>
+         <column autoUpdated="false" defaultValue="null" digits="0" id="1" name="price_id" nullable="true" remarks="" size="10" type="int4" typeCode="4">
+            <parent column="id" foreignKey="price_change_requests_price_id_fkey" implied="false" onDeleteCascade="true" schema="public" table="prices"/>
+         </column>
+         <column autoUpdated="false" defaultValue="null" digits="0" id="2" name="requested_by" nullable="false" remarks="" size="10" type="int4" typeCode="4"/>
+         <column autoUpdated="false" defaultValue="null" digits="0" id="3" name="price" nullable="false" remarks="" size="10" type="int4" typeCode="4"/>
+         <column autoUpdated="false" defaultValue="null" digits="0" id="4" name="info" nullable="true" remarks="" size="2147483647" type="text" typeCode="12"/>
+         <column autoUpdated="false" defaultValue="null" digits="6" id="5" name="created_at" nullable="false" remarks="" size="29" type="timestamp" typeCode="93"/>
+         <primaryKey column="id" sequenceNumberInPK="1"/>
+         <index name="price_change_requests_pkey" unique="true">
+            <column ascending="true" name="id"/>
+         </index>
+      </table>
+      <table name="prices" numRows="112553" remarks="" schema="public" type="TABLE">
+         <column autoUpdated="true" defaultValue="nextval('prices_id_seq'::regclass)" digits="0" id="0" name="id" nullable="false" remarks="" size="10" type="serial" typeCode="4">
+            <child column="price_id" foreignKey="discounts_price_id_fkey" implied="false" onDeleteCascade="true" schema="public" table="discounts"/>
+            <child column="parent_id" foreignKey="future_prices_parent_id_fkey" implied="false" onDeleteCascade="true" schema="public" table="future_prices"/>
+            <child column="price_id" foreignKey="price_change_requests_price_id_fkey" implied="false" onDeleteCascade="true" schema="public" table="price_change_requests"/>
+            <child column="parent_id" foreignKey="prices_history_parent_id_fkey" implied="false" onDeleteCascade="true" schema="public" table="prices_history"/>
+         </column>
+         <column autoUpdated="false" defaultValue="null" digits="0" id="1" name="store_id" nullable="false" remarks="" size="10" type="int4" typeCode="4"/>
+         <column autoUpdated="false" defaultValue="null" digits="0" id="2" name="supplier_product_id" nullable="false" remarks="" size="10" type="int4" typeCode="4">
+            <parent column="id" foreignKey="prices_supplier_product_id_fkey" implied="false" onDeleteCascade="true" schema="public" table="supplier_products"/>
+         </column>
+         <column autoUpdated="false" defaultValue="null" digits="0" id="3" name="trade_cost" nullable="false" remarks="" size="10" type="int4" typeCode="4"/>
+         <column autoUpdated="false" defaultValue="null" digits="0" id="4" name="info" nullable="true" remarks="" size="2147483647" type="text" typeCode="12"/>
+         <column autoUpdated="false" defaultValue="null" digits="0" id="5" name="accepted_by" nullable="false" remarks="" size="128" type="varchar" typeCode="12"/>
+         <column autoUpdated="false" defaultValue="null" digits="0" id="6" name="requested_by" nullable="false" remarks="" size="128" type="varchar" typeCode="12"/>
+         <column autoUpdated="false" defaultValue="null" digits="6" id="7" name="created_at" nullable="false" remarks="" size="29" type="timestamp" typeCode="93"/>
+         <column autoUpdated="false" defaultValue="null" digits="6" id="8" name="updated_at" nullable="false" remarks="" size="29" type="timestamp" typeCode="93"/>
+         <column autoUpdated="false" defaultValue="null" digits="6" id="9" name="deleted_at" nullable="true" remarks="" size="29" type="timestamp" typeCode="93"/>
+         <column autoUpdated="false" defaultValue="''::character varying" digits="0" id="10" name="store_global_id" nullable="true" remarks="" size="64" type="varchar" typeCode="12"/>
+         <column autoUpdated="false" defaultValue="null" digits="6" id="11" name="start_date" nullable="true" remarks="" size="29" type="timestamp" typeCode="93"/>
+         <column autoUpdated="false" defaultValue="NULL::character varying" digits="0" id="12" name="warehouse_id" nullable="true" remarks="" size="255" type="varchar" typeCode="12">
+            <parent column="id" foreignKey="prices_warehouse_id_fkey" implied="false" onDeleteCascade="false" schema="public" table="warehouse"/>
+         </column>
+         <column autoUpdated="false" defaultValue="null" digits="0" id="13" name="deleted_by" nullable="true" remarks="" size="256" type="varchar" typeCode="12"/>
+         <column autoUpdated="false" defaultValue="0" digits="0" id="14" name="trade_cost_units" nullable="true" remarks="" size="19" type="int8" typeCode="-5"/>
+         <column autoUpdated="false" defaultValue="0" digits="0" id="15" name="trade_cost_nanos" nullable="true" remarks="" size="19" type="int8" typeCode="-5"/>
+         <column autoUpdated="false" defaultValue="null" digits="0" id="16" name="change_source" nullable="true" remarks="" size="2147483647" type="change_source" typeCode="12"/>
+         <primaryKey column="id" sequenceNumberInPK="1"/>
+         <index name="prices_pkey" unique="true">
+            <column ascending="true" name="id"/>
+         </index>
+         <index name="prices_supplier_product_id_deleted_at_idx" unique="false">
+            <column ascending="true" name="supplier_product_id"/>
+            <column ascending="true" name="deleted_at"/>
+         </index>
+         <index name="store_global_id_price_idx" unique="false">
+            <column ascending="true" name="store_global_id"/>
+         </index>
+         <index name="store_product_price_idx" unique="false">
+            <column ascending="true" name="store_id"/>
+            <column ascending="true" name="supplier_product_id"/>
+         </index>
+      </table>
+      <table name="prices_history" numRows="501542" remarks="" schema="public" type="TABLE">
+         <column autoUpdated="true" defaultValue="nextval('prices_history_id_seq'::regclass)" digits="0" id="0" name="id" nullable="false" remarks="" size="10" type="serial" typeCode="4"/>
+         <column autoUpdated="false" defaultValue="null" digits="0" id="1" name="store_id" nullable="false" remarks="" size="10" type="int4" typeCode="4"/>
+         <column autoUpdated="false" defaultValue="null" digits="0" id="2" name="supplier_product_id" nullable="false" remarks="" size="10" type="int4" typeCode="4"/>
+         <column autoUpdated="false" defaultValue="null" digits="0" id="3" name="trade_cost" nullable="false" remarks="" size="10" type="int4" typeCode="4"/>
+         <column autoUpdated="false" defaultValue="null" digits="0" id="4" name="info" nullable="true" remarks="" size="2147483647" type="text" typeCode="12"/>
+         <column autoUpdated="false" defaultValue="null" digits="0" id="5" name="accepted_by" nullable="false" remarks="" size="128" type="varchar" typeCode="12"/>
+         <column autoUpdated="false" defaultValue="null" digits="0" id="6" name="requested_by" nullable="false" remarks="" size="128" type="varchar" typeCode="12"/>
+         <column autoUpdated="false" defaultValue="null" digits="6" id="7" name="created_at" nullable="false" remarks="" size="29" type="timestamp" typeCode="93"/>
+         <column autoUpdated="false" defaultValue="null" digits="0" id="8" name="parent_id" nullable="false" remarks="" size="10" type="int4" typeCode="4">
+            <parent column="id" foreignKey="prices_history_parent_id_fkey" implied="false" onDeleteCascade="true" schema="public" table="prices"/>
+         </column>
+         <column autoUpdated="false" defaultValue="''::character varying" digits="0" id="9" name="store_global_id" nullable="true" remarks="" size="64" type="varchar" typeCode="12"/>
+         <column autoUpdated="false" defaultValue="null" digits="6" id="10" name="start_date" nullable="true" remarks="" size="29" type="timestamp" typeCode="93"/>
+         <column autoUpdated="false" defaultValue="null" digits="6" id="11" name="deleted_at" nullable="true" remarks="" size="29" type="timestamp" typeCode="93"/>
+         <column autoUpdated="false" defaultValue="null" digits="0" id="12" name="deleted_by" nullable="true" remarks="" size="256" type="varchar" typeCode="12"/>
+         <column autoUpdated="false" defaultValue="NULL::character varying" digits="0" id="13" name="warehouse_id" nullable="true" remarks="" size="255" type="varchar" typeCode="12">
+            <parent column="id" foreignKey="prices_history_warehouse_id_fkey" implied="false" onDeleteCascade="false" schema="public" table="warehouse"/>
+         </column>
+         <column autoUpdated="false" defaultValue="0" digits="0" id="14" name="trade_cost_units" nullable="true" remarks="" size="19" type="int8" typeCode="-5"/>
+         <column autoUpdated="false" defaultValue="0" digits="0" id="15" name="trade_cost_nanos" nullable="true" remarks="" size="19" type="int8" typeCode="-5"/>
+         <column autoUpdated="false" defaultValue="null" digits="0" id="16" name="change_source" nullable="true" remarks="" size="2147483647" type="change_source" typeCode="12"/>
+         <primaryKey column="id" sequenceNumberInPK="1"/>
+         <index name="prices_history_pkey" unique="true">
+            <column ascending="true" name="id"/>
+         </index>
+         <index name="history_price_idx" unique="false">
+            <column ascending="true" name="parent_id"/>
+         </index>
+      </table>
+      <table name="product_detailed" numRows="0" remarks="" schema="public" type="VIEW" viewSql=" SELECT supplier_products.id AS supplier_product_id,&#10;    supplier_products.sku,&#10;    supplier_products.name AS product_name,&#10;    supplier_products.status,&#10;    supplier_products.min_qty,&#10;    ''::text AS barcode,&#10;    suppliers.id AS supplier_id,&#10;    suppliers.name AS supplier_name,&#10;    supplier_products.preference AS supplier_rank,&#10;    supplier_products.supplier_sku,&#10;    prices.warehouse_id,&#10;    warehouse.name AS warehouse_name,&#10;    prices.store_id,&#10;    prices.store_global_id,&#10;    prices.trade_cost,&#10;    prices.trade_cost_units,&#10;    prices.trade_cost_nanos,&#10;    prices.start_date AS trade_cost_start_date,&#10;    discounts.static_value AS off_invoice_static_value,&#10;    discounts.static_value_units AS off_invoice_static_value_units,&#10;    discounts.static_value_nanos AS off_invoice_static_value_nanos,&#10;    discounts.percentile_value AS off_invoice_percentile_value,&#10;    discounts.start_date AS discount_start_date,&#10;    0 AS vat_percentage&#10;   FROM ((((supplier_products&#10;     JOIN suppliers ON (((supplier_products.supplier_id = suppliers.id) AND ((suppliers.deleted_at IS NULL) OR (suppliers.deleted_at = '0001-01-01 00:00:00'::timestamp without time zone)))))&#10;     JOIN prices ON (((supplier_products.id = prices.supplier_product_id) AND ((prices.deleted_at IS NULL) OR (prices.deleted_at = '0001-01-01 00:00:00'::timestamp without time zone)))))&#10;     LEFT JOIN discounts ON (((prices.id = discounts.price_id) AND (discounts.discount_type = 'OFF_INVOICE'::discount_type) AND ((discounts.deleted_at IS NULL) OR (discounts.deleted_at = '0001-01-01 00:00:00'::timestamp without time zone)))))&#10;     LEFT JOIN warehouse ON ((((prices.warehouse_id)::text = (warehouse.id)::text) AND ((warehouse.deleted_at IS NULL) OR (warehouse.deleted_at = '0001-01-01 00:00:00'::timestamp without time zone)))))&#10;  WHERE ((supplier_products.deleted_at IS NULL) OR (supplier_products.deleted_at = '0001-01-01 00:00:00'::timestamp without time zone))&#10;  ORDER BY supplier_products.id, supplier_products.sku;">
+         <column autoUpdated="false" defaultValue="null" digits="0" id="0" name="supplier_product_id" nullable="true" remarks="" size="10" type="int4" typeCode="4"/>
+         <column autoUpdated="false" defaultValue="null" digits="0" id="1" name="sku" nullable="true" remarks="" size="20" type="varchar" typeCode="12">
+            <parent column="sku" foreignKey="Implied Constraint" implied="true" onDeleteCascade="false" schema="public" table="products"/>
+         </column>
+         <column autoUpdated="false" defaultValue="null" digits="0" id="2" name="product_name" nullable="true" remarks="" size="255" type="varchar" typeCode="12"/>
+         <column autoUpdated="false" defaultValue="null" digits="0" id="3" name="status" nullable="true" remarks="" size="2147483647" type="supplier_product_status" typeCode="12"/>
+         <column autoUpdated="false" defaultValue="null" digits="0" id="4" name="min_qty" nullable="true" remarks="" size="10" type="int4" typeCode="4"/>
+         <column autoUpdated="false" defaultValue="null" digits="0" id="5" name="barcode" nullable="true" remarks="" size="2147483647" type="text" typeCode="12"/>
+         <column autoUpdated="false" defaultValue="null" digits="0" id="6" name="supplier_id" nullable="true" remarks="" size="10" type="int4" typeCode="4"/>
+         <column autoUpdated="false" defaultValue="null" digits="0" id="7" name="supplier_name" nullable="true" remarks="" size="256" type="varchar" typeCode="12">
+            <parent column="name" foreignKey="Implied Constraint" implied="true" onDeleteCascade="false" schema="public" table="locks"/>
+         </column>
+         <column autoUpdated="false" defaultValue="null" digits="0" id="8" name="supplier_rank" nullable="true" remarks="" size="10" type="int4" typeCode="4"/>
+         <column autoUpdated="false" defaultValue="null" digits="0" id="9" name="supplier_sku" nullable="true" remarks="" size="255" type="varchar" typeCode="12"/>
+         <column autoUpdated="false" defaultValue="null" digits="0" id="10" name="warehouse_id" nullable="true" remarks="" size="255" type="varchar" typeCode="12"/>
+         <column autoUpdated="false" defaultValue="null" digits="0" id="11" name="warehouse_name" nullable="true" remarks="" size="255" type="varchar" typeCode="12"/>
+         <column autoUpdated="false" defaultValue="null" digits="0" id="12" name="store_id" nullable="true" remarks="" size="10" type="int4" typeCode="4"/>
+         <column autoUpdated="false" defaultValue="null" digits="0" id="13" name="store_global_id" nullable="true" remarks="" size="64" type="varchar" typeCode="12"/>
+         <column autoUpdated="false" defaultValue="null" digits="0" id="14" name="trade_cost" nullable="true" remarks="" size="10" type="int4" typeCode="4"/>
+         <column autoUpdated="false" defaultValue="null" digits="0" id="15" name="trade_cost_units" nullable="true" remarks="" size="19" type="int8" typeCode="-5"/>
+         <column autoUpdated="false" defaultValue="null" digits="0" id="16" name="trade_cost_nanos" nullable="true" remarks="" size="19" type="int8" typeCode="-5"/>
+         <column autoUpdated="false" defaultValue="null" digits="6" id="17" name="trade_cost_start_date" nullable="true" remarks="" size="29" type="timestamp" typeCode="93"/>
+         <column autoUpdated="false" defaultValue="null" digits="0" id="18" name="off_invoice_static_value" nullable="true" remarks="" size="10" type="int4" typeCode="4"/>
+         <column autoUpdated="false" defaultValue="null" digits="0" id="19" name="off_invoice_static_value_units" nullable="true" remarks="" size="19" type="int8" typeCode="-5"/>
+         <column autoUpdated="false" defaultValue="null" digits="0" id="20" name="off_invoice_static_value_nanos" nullable="true" remarks="" size="19" type="int8" typeCode="-5"/>
+         <column autoUpdated="false" defaultValue="null" digits="2" id="21" name="off_invoice_percentile_value" nullable="true" remarks="" size="5" type="numeric" typeCode="2"/>
+         <column autoUpdated="false" defaultValue="null" digits="6" id="22" name="discount_start_date" nullable="true" remarks="" size="29" type="timestamp" typeCode="93"/>
+         <column autoUpdated="false" defaultValue="null" digits="0" id="23" name="vat_percentage" nullable="true" remarks="" size="10" type="int4" typeCode="4"/>
+      </table>
+      <table name="product_vendors" numRows="167481" remarks="" schema="public" type="TABLE">
+         <column autoUpdated="false" defaultValue="null" digits="0" id="0" name="sku" nullable="false" remarks="" size="20" type="varchar" typeCode="12">
+            <parent column="sku" foreignKey="product_vendors_sku_fkey" implied="false" onDeleteCascade="true" schema="public" table="products"/>
+         </column>
+         <column autoUpdated="false" defaultValue="null" digits="0" id="1" name="vendor_id" nullable="true" remarks="" size="255" type="varchar" typeCode="12"/>
+         <column autoUpdated="false" defaultValue="null" digits="6" id="2" name="updated_at" nullable="false" remarks="" size="29" type="timestamp" typeCode="93"/>
+         <column autoUpdated="false" defaultValue="null" digits="0" id="3" name="vendor_global_id" nullable="true" remarks="" size="255" type="varchar" typeCode="12"/>
+         <column autoUpdated="false" defaultValue="true" digits="0" id="4" name="active" nullable="true" remarks="" size="1" type="bool" typeCode="-7"/>
+         <index name="sku_vendor_id_unique" unique="true">
+            <column ascending="true" name="sku"/>
+            <column ascending="true" name="vendor_id"/>
+         </index>
+         <index name="sku_vendor_id_vendor_global_id_unique" unique="true">
+            <column ascending="true" name="sku"/>
+            <column ascending="true" name="vendor_id"/>
+            <column ascending="true" name="vendor_global_id"/>
+         </index>
+      </table>
+      <table name="products" numRows="4641" remarks="" schema="public" type="TABLE">
+         <column autoUpdated="false" defaultValue="null" digits="0" id="0" name="sku" nullable="false" remarks="" size="20" type="varchar" typeCode="12">
+            <child column="sku" foreignKey="Implied Constraint" implied="true" onDeleteCascade="false" schema="public" table="imports_row_product_assortment"/>
+            <child column="sku" foreignKey="Implied Constraint" implied="true" onDeleteCascade="false" schema="public" table="imports_row_product_price_existing_store"/>
+            <child column="sku" foreignKey="Implied Constraint" implied="true" onDeleteCascade="false" schema="public" table="imports_row_purchase_vat"/>
+            <child column="sku" foreignKey="Implied Constraint" implied="true" onDeleteCascade="false" schema="public" table="product_detailed"/>
+            <child column="sku" foreignKey="product_vendors_sku_fkey" implied="false" onDeleteCascade="true" schema="public" table="product_vendors"/>
+            <child column="sku" foreignKey="Implied Constraint" implied="true" onDeleteCascade="false" schema="public" table="products_history"/>
+            <child column="sku" foreignKey="Implied Constraint" implied="true" onDeleteCascade="false" schema="public" table="supplier_products"/>
+         </column>
+         <column autoUpdated="false" defaultValue="null" digits="0" id="1" name="title" nullable="true" remarks="" size="255" type="varchar" typeCode="12"/>
+         <column autoUpdated="false" defaultValue="null" digits="0" id="2" name="description" nullable="true" remarks="" size="2147483647" type="text" typeCode="12"/>
+         <column autoUpdated="false" defaultValue="null" digits="0" id="3" name="image_url" nullable="true" remarks="" size="2147483647" type="text" typeCode="12"/>
+         <column autoUpdated="false" defaultValue="null" digits="2" id="4" name="purchase_vat" nullable="true" remarks="" size="5" type="numeric" typeCode="2"/>
+         <column autoUpdated="false" defaultValue="null" digits="2" id="5" name="sales_vat" nullable="true" remarks="" size="5" type="numeric" typeCode="2"/>
+         <column autoUpdated="false" defaultValue="null" digits="6" id="6" name="synced_at" nullable="false" remarks="" size="29" type="timestamp" typeCode="93"/>
+         <column autoUpdated="false" defaultValue="null" digits="0" id="7" name="requested_by" nullable="true" remarks="" size="255" type="varchar" typeCode="12"/>
+         <column autoUpdated="false" defaultValue="null" digits="6" id="8" name="created_at" nullable="true" remarks="" size="29" type="timestamp" typeCode="93"/>
+         <column autoUpdated="false" defaultValue="true" digits="0" id="9" name="active" nullable="true" remarks="" size="1" type="bool" typeCode="-7"/>
+         <column autoUpdated="false" defaultValue="null" digits="0" id="10" name="change_source" nullable="true" remarks="" size="2147483647" type="change_source" typeCode="12"/>
+         <column autoUpdated="false" defaultValue="null" digits="6" id="11" name="updated_at" nullable="true" remarks="" size="29" type="timestamp" typeCode="93"/>
+         <primaryKey column="sku" sequenceNumberInPK="1"/>
+         <index name="products_pkey" unique="true">
+            <column ascending="true" name="sku"/>
+         </index>
+      </table>
+      <table name="products_history" numRows="0" remarks="" schema="public" type="TABLE">
+         <column autoUpdated="true" defaultValue="nextval('products_history_id_seq'::regclass)" digits="0" id="0" name="id" nullable="false" remarks="" size="10" type="serial" typeCode="4"/>
+         <column autoUpdated="false" defaultValue="null" digits="0" id="1" name="sku" nullable="false" remarks="" size="20" type="varchar" typeCode="12">
+            <parent column="sku" foreignKey="Implied Constraint" implied="true" onDeleteCascade="false" schema="public" table="products"/>
+         </column>
+         <column autoUpdated="false" defaultValue="null" digits="2" id="2" name="purchase_vat" nullable="true" remarks="" size="5" type="numeric" typeCode="2"/>
+         <column autoUpdated="false" defaultValue="null" digits="6" id="3" name="created_at" nullable="false" remarks="" size="29" type="timestamp" typeCode="93"/>
+         <column autoUpdated="false" defaultValue="null" digits="0" id="4" name="requested_by" nullable="false" remarks="" size="128" type="varchar" typeCode="12"/>
+         <column autoUpdated="false" defaultValue="null" digits="0" id="5" name="change_source" nullable="true" remarks="" size="2147483647" type="change_source" typeCode="12"/>
+         <primaryKey column="id" sequenceNumberInPK="1"/>
+         <index name="products_history_pkey" unique="true">
+            <column ascending="true" name="id"/>
+         </index>
+      </table>
+      <table name="schema_migrations" numRows="0" remarks="" schema="public" type="TABLE">
+         <column autoUpdated="false" defaultValue="null" digits="0" id="0" name="version" nullable="false" remarks="" size="19" type="int8" typeCode="-5"/>
+         <column autoUpdated="false" defaultValue="null" digits="0" id="1" name="dirty" nullable="false" remarks="" size="1" type="bool" typeCode="-7"/>
+         <primaryKey column="version" sequenceNumberInPK="1"/>
+         <index name="schema_migrations_pkey" unique="true">
+            <column ascending="true" name="version"/>
+         </index>
+      </table>
+      <table name="settings" numRows="0" remarks="" schema="public" type="TABLE">
+         <column autoUpdated="false" defaultValue="null" digits="0" id="0" name="key" nullable="false" remarks="" size="255" type="varchar" typeCode="12"/>
+         <column autoUpdated="false" defaultValue="null" digits="0" id="1" name="value" nullable="false" remarks="" size="255" type="varchar" typeCode="12"/>
+         <primaryKey column="key" sequenceNumberInPK="1"/>
+         <index name="settings_pkey" unique="true">
+            <column ascending="true" name="key"/>
+         </index>
+      </table>
+      <table name="supplier_products" numRows="7142" remarks="" schema="public" type="TABLE">
+         <column autoUpdated="true" defaultValue="nextval('supplier_products_id_seq'::regclass)" digits="0" id="0" name="id" nullable="false" remarks="" size="10" type="serial" typeCode="4">
+            <child column="supplier_product_id" foreignKey="fk_discount_supplier_product_id" implied="false" onDeleteCascade="false" schema="public" table="discount"/>
+            <child column="supplier_product_id" foreignKey="fk_price_supplier_product_id" implied="false" onDeleteCascade="false" schema="public" table="price"/>
+            <child column="supplier_product_id" foreignKey="prices_supplier_product_id_fkey" implied="false" onDeleteCascade="true" schema="public" table="prices"/>
+         </column>
+         <column autoUpdated="false" defaultValue="null" digits="0" id="1" name="catalog_product_id" nullable="false" remarks="" size="10" type="int4" typeCode="4"/>
+         <column autoUpdated="false" defaultValue="null" digits="0" id="2" name="supplier_id" nullable="false" remarks="" size="10" type="int4" typeCode="4">
+            <parent column="id" foreignKey="supplier_products_supplier_id_fkey" implied="false" onDeleteCascade="true" schema="public" table="suppliers"/>
+         </column>
+         <column autoUpdated="false" defaultValue="0" digits="0" id="3" name="min_qty" nullable="false" remarks="" size="10" type="int4" typeCode="4"/>
+         <column autoUpdated="false" defaultValue="0" digits="0" id="4" name="preference" nullable="true" remarks="" size="10" type="int4" typeCode="4"/>
+         <column autoUpdated="false" defaultValue="null" digits="6" id="5" name="created_at" nullable="false" remarks="" size="29" type="timestamp" typeCode="93"/>
+         <column autoUpdated="false" defaultValue="null" digits="6" id="6" name="updated_at" nullable="false" remarks="" size="29" type="timestamp" typeCode="93"/>
+         <column autoUpdated="false" defaultValue="null" digits="6" id="7" name="deleted_at" nullable="true" remarks="" size="29" type="timestamp" typeCode="93"/>
+         <column autoUpdated="false" defaultValue="null" digits="0" id="8" name="sku" nullable="false" remarks="" size="20" type="varchar" typeCode="12">
+            <parent column="sku" foreignKey="Implied Constraint" implied="true" onDeleteCascade="false" schema="public" table="products"/>
+         </column>
+         <column autoUpdated="false" defaultValue="null" digits="0" id="9" name="name" nullable="false" remarks="" size="255" type="varchar" typeCode="12"/>
+         <column autoUpdated="false" defaultValue="null" digits="0" id="10" name="image_url" nullable="false" remarks="" size="2147483647" type="text" typeCode="12"/>
+         <column autoUpdated="false" defaultValue="'ACTIVE'::supplier_product_status" digits="0" id="11" name="status" nullable="true" remarks="" size="2147483647" type="supplier_product_status" typeCode="12"/>
+         <column autoUpdated="false" defaultValue="null" digits="0" id="12" name="supplier_sku" nullable="true" remarks="" size="255" type="varchar" typeCode="12"/>
+         <primaryKey column="id" sequenceNumberInPK="1"/>
+         <index name="supplier_products_pkey" unique="true">
+            <column ascending="true" name="id"/>
+         </index>
+         <index name="product_supplier_id_sku_idx" unique="false">
+            <column ascending="true" name="supplier_id"/>
+            <column ascending="true" name="sku"/>
+         </index>
+         <index name="supplier_sku_unique" unique="true">
+            <column ascending="true" name="supplier_id"/>
+            <column ascending="true" name="sku"/>
+            <column ascending="true" name="deleted_at"/>
+         </index>
+      </table>
+      <table name="suppliers" numRows="61" remarks="" schema="public" type="TABLE">
+         <column autoUpdated="true" defaultValue="nextval('suppliers_id_seq'::regclass)" digits="0" id="0" name="id" nullable="false" remarks="" size="10" type="serial" typeCode="4">
+            <child column="supplier_id" foreignKey="supplier_products_supplier_id_fkey" implied="false" onDeleteCascade="true" schema="public" table="supplier_products"/>
+         </column>
+         <column autoUpdated="false" defaultValue="null" digits="0" id="1" name="name" nullable="false" remarks="" size="256" type="varchar" typeCode="12">
+            <parent column="name" foreignKey="Implied Constraint" implied="true" onDeleteCascade="false" schema="public" table="locks"/>
+         </column>
+         <column autoUpdated="false" defaultValue="null" digits="0" id="2" name="country_id" nullable="false" remarks="" size="10" type="int4" typeCode="4">
+            <parent column="id" foreignKey="suppliers_country_id_fkey" implied="false" onDeleteCascade="false" schema="public" table="countries"/>
+         </column>
+         <column autoUpdated="false" defaultValue="null" digits="0" id="3" name="city_id" nullable="false" remarks="" size="10" type="int4" typeCode="4">
+            <parent column="id" foreignKey="suppliers_city_id_fkey" implied="false" onDeleteCascade="false" schema="public" table="cities"/>
+         </column>
+         <column autoUpdated="false" defaultValue="null" digits="0" id="4" name="street" nullable="false" remarks="" size="256" type="varchar" typeCode="12"/>
+         <column autoUpdated="false" defaultValue="null" digits="0" id="5" name="complement" nullable="true" remarks="" size="256" type="varchar" typeCode="12"/>
+         <column autoUpdated="false" defaultValue="null" digits="0" id="6" name="email" nullable="true" remarks="" size="256" type="varchar" typeCode="12"/>
+         <column autoUpdated="false" defaultValue="null" digits="0" id="7" name="password" nullable="true" remarks="" size="256" type="varchar" typeCode="12"/>
+         <column autoUpdated="false" defaultValue="null" digits="0" id="8" name="cellphone" nullable="true" remarks="" size="256" type="varchar" typeCode="12"/>
+         <column autoUpdated="false" defaultValue="null" digits="0" id="9" name="landline_telephone" nullable="true" remarks="" size="256" type="varchar" typeCode="12"/>
+         <column autoUpdated="false" defaultValue="null" digits="0" id="10" name="supplier_finance_id" nullable="true" remarks="" size="128" type="varchar" typeCode="12"/>
+         <column autoUpdated="false" defaultValue="null" digits="0" id="11" name="supplier_tax_id" nullable="true" remarks="" size="128" type="varchar" typeCode="12"/>
+         <column autoUpdated="false" defaultValue="null" digits="0" id="12" name="image_url" nullable="true" remarks="" size="128" type="varchar" typeCode="12"/>
+         <column autoUpdated="false" defaultValue="null" digits="0" id="13" name="currency_id" nullable="false" remarks="" size="10" type="int4" typeCode="4"/>
+         <column autoUpdated="false" defaultValue="null" digits="6" id="14" name="created_at" nullable="false" remarks="" size="29" type="timestamp" typeCode="93"/>
+         <column autoUpdated="false" defaultValue="null" digits="6" id="15" name="updated_at" nullable="false" remarks="" size="29" type="timestamp" typeCode="93"/>
+         <column autoUpdated="false" defaultValue="null" digits="6" id="16" name="deleted_at" nullable="true" remarks="" size="29" type="timestamp" typeCode="93"/>
+         <column autoUpdated="false" defaultValue="null" digits="0" id="17" name="zip_code" nullable="true" remarks="" size="255" type="varchar" typeCode="12"/>
+         <column autoUpdated="false" defaultValue="null" digits="0" id="18" name="tax_office_name" nullable="true" remarks="" size="255" type="varchar" typeCode="12"/>
+         <column autoUpdated="false" defaultValue="null" digits="0" id="19" name="region_name" nullable="true" remarks="" size="255" type="varchar" typeCode="12"/>
+         <column autoUpdated="false" defaultValue="null" digits="0" id="20" name="address_line_2" nullable="true" remarks="" size="255" type="varchar" typeCode="12"/>
+         <column autoUpdated="false" defaultValue="null" digits="0" id="21" name="project_code" nullable="true" remarks="" size="255" type="varchar" typeCode="12"/>
+         <column autoUpdated="false" defaultValue="null" digits="0" id="22" name="iban" nullable="true" remarks="" size="255" type="varchar" typeCode="12"/>
+         <column autoUpdated="false" defaultValue="null" digits="0" id="23" name="group_name" nullable="true" remarks="" size="255" type="varchar" typeCode="12"/>
+         <column autoUpdated="false" defaultValue="null" digits="0" id="24" name="supplier_code" nullable="true" remarks="" size="255" type="varchar" typeCode="12"/>
+         <column autoUpdated="false" defaultValue="null" digits="0" id="25" name="supplier_pay_plan_code" nullable="true" remarks="" size="255" type="varchar" typeCode="12"/>
+         <column autoUpdated="false" defaultValue="null" digits="0" id="26" name="agreement_url" nullable="true" remarks="" size="255" type="varchar" typeCode="12"/>
+         <primaryKey column="id" sequenceNumberInPK="1"/>
+         <index name="suppliers_pkey" unique="true">
+            <column ascending="true" name="id"/>
+         </index>
+         <index name="suppliers_supplier_code_key" unique="true">
+            <column ascending="true" name="supplier_code"/>
+         </index>
+      </table>
+      <table name="warehouse" numRows="28" remarks="" schema="public" type="TABLE">
+         <column autoUpdated="false" defaultValue="null" digits="0" id="0" name="id" nullable="false" remarks="" size="255" type="varchar" typeCode="12">
+            <child column="warehouse_id" foreignKey="fk_discount_warehouse_id" implied="false" onDeleteCascade="false" schema="public" table="discount"/>
+            <child column="warehouse_id" foreignKey="future_prices_warehouse_id_fkey" implied="false" onDeleteCascade="false" schema="public" table="future_prices"/>
+            <child column="warehouse_id" foreignKey="fk_price_warehouse_id" implied="false" onDeleteCascade="false" schema="public" table="price"/>
+            <child column="warehouse_id" foreignKey="prices_warehouse_id_fkey" implied="false" onDeleteCascade="false" schema="public" table="prices"/>
+            <child column="warehouse_id" foreignKey="prices_history_warehouse_id_fkey" implied="false" onDeleteCascade="false" schema="public" table="prices_history"/>
+         </column>
+         <column autoUpdated="false" defaultValue="null" digits="0" id="1" name="name" nullable="false" remarks="" size="255" type="varchar" typeCode="12"/>
+         <column autoUpdated="false" defaultValue="null" digits="0" id="2" name="address_line_one" nullable="false" remarks="" size="255" type="varchar" typeCode="12"/>
+         <column autoUpdated="false" defaultValue="null" digits="0" id="3" name="address_line_two" nullable="false" remarks="" size="255" type="varchar" typeCode="12"/>
+         <column autoUpdated="false" defaultValue="null" digits="0" id="4" name="zip_code" nullable="false" remarks="" size="255" type="varchar" typeCode="12"/>
+         <column autoUpdated="false" defaultValue="null" digits="0" id="5" name="city_name" nullable="false" remarks="" size="255" type="varchar" typeCode="12"/>
+         <column autoUpdated="false" defaultValue="null" digits="0" id="6" name="country_code" nullable="false" remarks="" size="255" type="varchar" typeCode="12"/>
+         <column autoUpdated="false" defaultValue="null" digits="0" id="7" name="phone_numbers" nullable="false" remarks="" size="2147483647" type="_text" typeCode="2003"/>
+         <column autoUpdated="false" defaultValue="null" digits="0" id="8" name="platform_vendor_ids" nullable="false" remarks="" size="2147483647" type="json" typeCode="1111"/>
+         <column autoUpdated="false" defaultValue="null" digits="6" id="9" name="created_at" nullable="false" remarks="" size="29" type="timestamp" typeCode="93"/>
+         <column autoUpdated="false" defaultValue="null" digits="6" id="10" name="updated_at" nullable="false" remarks="" size="29" type="timestamp" typeCode="93"/>
+         <column autoUpdated="false" defaultValue="null" digits="6" id="11" name="deleted_at" nullable="true" remarks="" size="29" type="timestamp" typeCode="93"/>
+         <column autoUpdated="false" defaultValue="''::character varying" digits="0" id="12" name="type" nullable="true" remarks="" size="32" type="varchar" typeCode="12"/>
+         <primaryKey column="id" sequenceNumberInPK="1"/>
+         <index name="warehouse_pkey" unique="true">
+            <column ascending="true" name="id"/>
+         </index>
+      </table>
+   </tables>
+</database>

@@ -1,0 +1,5 @@
+date=2022-09-24 19:47:14+0000
+os=Linux 5.10.104-linuxkit
+schemaspy-version=6.1.1-SNAPSHOT
+schemaspy-build=6.1.1-SNAPSHOT.41 2022-08-16 21:37:56
+renderer=Graphviz dot 2.47.1 
